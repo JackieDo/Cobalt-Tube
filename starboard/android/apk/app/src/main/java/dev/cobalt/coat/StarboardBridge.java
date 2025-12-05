@@ -30,6 +30,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.Pair;
 import android.util.Size;
 import android.util.SizeF;
@@ -881,7 +882,6 @@ public class StarboardBridge {
   @SuppressWarnings("unused")
   @UsedByNative
   protected String getBrandAndModel() {
-    // ro.product.brand + ro.product.model
-    return Build.BRAND + " " + Build.MODEL;
+    return Settings.Global.getString(appContext.getContentResolver(), "device_name");
   }
 }
