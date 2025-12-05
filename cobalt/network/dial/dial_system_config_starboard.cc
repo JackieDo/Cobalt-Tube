@@ -17,6 +17,8 @@
 #include "base/files/file.h"
 #include "base/logging.h"
 #include "cobalt/network/dial/dial_system_config.h"
+#include "starboard/android/shared/jni_env_ext.h"
+#include "starboard/android/shared/jni_utils.h"
 #include "starboard/configuration_constants.h"
 #include "starboard/system.h"
 
@@ -31,9 +33,22 @@ namespace network {
 // static
 std::string DialSystemConfig::GetFriendlyName() {
   char buffer[kMaxNameSize];
-  if (SbSystemGetProperty(kSbSystemPropertyFriendlyName, buffer,
-                          sizeof(buffer))) {
-    return std::string(buffer);
+  bool friendlyNameSuccess = SbSystemGetProperty(kSbSystemPropertyFriendlyName,
+                                                 buffer, sizeof(buffer));
+#ifdef __ANDROID__
+  starboard::android::shared::JniEnvExt* env =
+      starboard::android::shared::JniEnvExt::Get();
+  starboard::android::shared::ScopedLocalJavaRef<jstring> brand_and_model(
+      env->CallStarboardObjectMethodOrAbort("getBrandAndModel",
+                                            "()Ljava/lang/String;"));
+  std::string utf_str = env->GetStringStandardUTFOrAbort(brand_and_model.Get());
+#endif
+  if (friendlyNameSuccess) {
+    std::string friendlyName = std::string(buffer);
+#ifdef __ANDROID__
+    return friendlyName + " (" + utf_str + ")";
+#endif
+    return friendlyName;
   } else {
     return std::string();
   }

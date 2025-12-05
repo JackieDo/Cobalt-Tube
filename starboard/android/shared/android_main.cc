@@ -314,6 +314,13 @@ bool OnTouchEvent(GameActivity* activity,
 
 bool OnKey(GameActivity* activity, const GameActivityKeyEvent* event) {
   if (g_app_running.load()) {
+    if (event->keyCode == 24 || event->keyCode == 25 || event->keyCode == 164) {
+      SbKey key = event->keyCode == 24   ? SbKey::kSbKeyVolumeUp
+                  : event->keyCode == 25 ? SbKey::kSbKeyVolumeDown
+                                         : SbKey::kSbKeyVolumeMute;
+      ApplicationAndroid::Get()->SendKeyboardInject(key);
+      return false;
+    }
     return ApplicationAndroid::Get()->SendAndroidKeyEvent(event);
   }
   return false;

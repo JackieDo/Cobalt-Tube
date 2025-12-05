@@ -30,6 +30,7 @@ import android.net.ConnectivityManager;
 import android.net.Network;
 import android.net.NetworkCapabilities;
 import android.os.Build;
+import android.provider.Settings;
 import android.util.Pair;
 import android.util.Size;
 import android.util.SizeF;
@@ -137,7 +138,6 @@ public class StarboardBridge {
     this.networkStatus = new NetworkStatus(appContext);
     this.resourceOverlay = new ResourceOverlay(appContext);
     this.advertisingId = new AdvertisingId(appContext);
-    this.volumeStateReceiver = new VolumeStateReceiver(appContext);
     this.isAmatiDevice = appContext.getPackageManager().hasSystemFeature(AMATI_EXPERIENCE_FEATURE);
   }
 
@@ -867,7 +867,7 @@ public class StarboardBridge {
 
   @SuppressWarnings("unused")
   @UsedByNative
-    protected String getVersion() {
+  protected String getVersion() {
     try {
       android.content.pm.PackageInfo packageInfo =
           appContext.getPackageManager().getPackageInfo(appContext.getPackageName(), 0);
@@ -876,5 +876,11 @@ public class StarboardBridge {
       Log.e(TAG, "Failed to get package info", e);
       return "unknown";
     }
+  }
+
+  @SuppressWarnings("unused")
+  @UsedByNative
+  protected String getBrandAndModel() {
+    return Settings.Global.getString(appContext.getContentResolver(), "device_name");
   }
 }

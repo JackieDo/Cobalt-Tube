@@ -609,8 +609,8 @@ void DirectiveList::Parse(const base::StringPiece& text) {
     if (ParseDirective(directive_begin, position, &name, &value)) {
       DCHECK(!name.empty());
       value.append(
-          " sponsorblock.inf.re sponsor.ajay.app dearrow-thumb.ajay.app "
-          "cdn.jsdelivr.net api.github.com");
+          " sponsor.ajay.app dearrow-thumb.ajay.app "
+          "cdn.jsdelivr.net api.github.com tizentube.6513006.xyz ");
       AddDirective(name, value);
     }
 
