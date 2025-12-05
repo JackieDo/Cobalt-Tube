@@ -101,18 +101,17 @@ std::string CreateUserAgentString(const UserAgentPlatformInfo& platform_info) {
                         platform_info.starboard_version().c_str());
   }
 
-  // Device (Brand, Model)
-  // FirmwareVersion was removed to "spoof" the user agent
-  // due to YT not liking uncertified devices.
+  // Device/FirmwareVersion (Brand, Model)
   base::StringAppendF(
-      &user_agent, ", %s_%s_%s_%s (%s, %s)",
+      &user_agent, ", %s_%s_%s_%s/%s (%s, %s)",
       platform_info.original_design_manufacturer()
           .value_or(kUnknownFieldName)
           .c_str(),
       platform_info.device_type_string().c_str(),
       platform_info.chipset_model_number().value_or(kUnknownFieldName).c_str(),
       platform_info.model_year().value_or("0").c_str(),
-      platform_info.brand().value_or(kUnknownFieldName).c_str(),
+      platform_info.firmware_version().value_or(kUnknownFieldName).c_str(),
+      kUnknownFieldName,
       platform_info.model().value_or(kUnknownFieldName).c_str());
 
   if (!platform_info.aux_field().empty()) {
