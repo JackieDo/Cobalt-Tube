@@ -17,8 +17,10 @@
 #include "base/files/file.h"
 #include "base/logging.h"
 #include "cobalt/network/dial/dial_system_config.h"
+#ifdef __ANDROID__
 #include "starboard/android/shared/jni_env_ext.h"
 #include "starboard/android/shared/jni_utils.h"
+#endif
 #include "starboard/configuration_constants.h"
 #include "starboard/system.h"
 

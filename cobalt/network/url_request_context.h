@@ -86,6 +86,8 @@ class URLRequestContext {
     return url_request_context_.get();
   }
 
+  std::unique_ptr<net::URLRequestContext> url_request_context_;
+
  private:
   SEQUENCE_CHECKER(sequence_checker_);
   scoped_refptr<net::CookieMonster::PersistentCookieStore>
@@ -106,7 +108,6 @@ class URLRequestContext {
   std::unique_ptr<cobalt::persistent_storage::PersistentSettings>
       cache_persistent_settings_;
   std::map<uint32_t, disk_cache::ResourceType> url_resource_type_map_;
-  std::unique_ptr<net::URLRequestContext> url_request_context_;
 
   DISALLOW_COPY_AND_ASSIGN(URLRequestContext);
 };

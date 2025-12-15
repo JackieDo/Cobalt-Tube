@@ -111,7 +111,7 @@ std::string CreateUserAgentString(const UserAgentPlatformInfo& platform_info) {
       platform_info.chipset_model_number().value_or(kUnknownFieldName).c_str(),
       platform_info.model_year().value_or("0").c_str(),
       platform_info.firmware_version().value_or(kUnknownFieldName).c_str(),
-      kUnknownFieldName,
+      platform_info.brand().value_or(kUnknownFieldName).c_str(),
       platform_info.model().value_or(kUnknownFieldName).c_str());
 
   if (!platform_info.aux_field().empty()) {

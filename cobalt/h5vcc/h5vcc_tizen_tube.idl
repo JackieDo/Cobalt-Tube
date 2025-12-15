@@ -15,4 +15,5 @@
 interface H5vccTizenTube {
     boolean InstallAppFromURL(DOMString url);
     DOMString GetVersion();
+    boolean SetUserAgent(DOMString user_agent);
 };

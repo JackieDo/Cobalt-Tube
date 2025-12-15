@@ -37,7 +37,7 @@ H5vcc::H5vcc(const Settings& settings) {
                         settings.user_agent_data, settings.global_environment,
                         settings.persistent_settings);
 
-  tizentube_ = new H5vccTizenTube();
+  tizentube_ = new H5vccTizenTube(settings.network_module);
   storage_ =
       new H5vccStorage(settings.network_module, settings.persistent_settings);
   trace_event_ = new H5vccTraceEvent();

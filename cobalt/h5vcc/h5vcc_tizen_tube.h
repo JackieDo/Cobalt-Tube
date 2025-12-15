@@ -25,6 +25,7 @@
 #include "cobalt/script/union_type.h"
 #include "cobalt/script/wrappable.h"
 #include "cobalt/web/navigator_ua_data.h"
+#include "net/url_request/static_http_user_agent_settings.h"
 
 #if SB_IS(EVERGREEN)
 #include "chrome/updater/updater_module.h"
@@ -36,10 +37,7 @@ namespace h5vcc {
 // This class is used for internal methods for TizenTube Cobalt.
 class H5vccTizenTube : public script::Wrappable {
  public:
-  typedef base::Callback<bool(const std::string& name, int value)>
-      SetSettingFunc;
-
-  typedef script::UnionType2<int32, std::string> SetValueType;
+  explicit H5vccTizenTube(cobalt::network::NetworkModule* network_module);
 
   H5vccTizenTube();
 
@@ -47,10 +45,12 @@ class H5vccTizenTube : public script::Wrappable {
   // and install it.
   bool InstallAppFromURL(const std::string& url) const;
   std::string GetVersion() const;
+  bool SetUserAgent(const std::string& user_agent) const;
 
   DEFINE_WRAPPABLE_TYPE(H5vccTizenTube);
 
  private:
+  cobalt::network::NetworkModule* network_module_ = nullptr;
   DISALLOW_COPY_AND_ASSIGN(H5vccTizenTube);
 };
 

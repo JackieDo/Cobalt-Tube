@@ -31,7 +31,10 @@ namespace h5vcc {
 using starboard::android::shared::JniEnvExt;
 using starboard::android::shared::ScopedLocalJavaRef;
 #endif
-H5vccTizenTube::H5vccTizenTube() {}
+
+
+H5vccTizenTube::H5vccTizenTube(cobalt::network::NetworkModule* network_module)
+    : network_module_{network_module} {}
 
 bool H5vccTizenTube::InstallAppFromURL(const std::string& url) const {
 #if defined(ANDROID)
@@ -56,6 +59,23 @@ std::string H5vccTizenTube::GetVersion() const {
   return version;
 #endif
   return "";
+}
+
+bool H5vccTizenTube::SetUserAgent(const std::string& user_agent) const {
+  network_module_->task_runner()->PostTask(
+      FROM_HERE, base::Bind(
+                     [](cobalt::network::NetworkModule* network_module,
+                        const std::string& user_agent) {
+                       auto http_user_agent_settings =
+                           std::make_unique<net::StaticHttpUserAgentSettings>(
+                               network_module->options_.preferred_language,
+                               user_agent);
+                       network_module->url_request_context_
+                           ->url_request_context_->set_http_user_agent_settings(
+                               std::move(http_user_agent_settings));
+                     },
+                     network_module_, user_agent));
+  return true;
 }
 
 

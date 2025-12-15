@@ -150,6 +150,11 @@ class NetworkModule : public base::CurrentThread::DestructionObserver {
   void StartNetLog();
   base::FilePath StopNetLog();
 
+  // This was set public in order for H5vccTizenTube to set it after setting the
+  // UA.
+  std::unique_ptr<URLRequestContext> url_request_context_;
+  Options options_;
+
 #if defined(DIAL_SERVER)
   void RestartDialService();
 #endif
@@ -164,7 +169,6 @@ class NetworkModule : public base::CurrentThread::DestructionObserver {
   std::vector<std::string> client_hint_headers_;
   std::unique_ptr<storage::StorageManager> storage_manager_;
   std::unique_ptr<base::Thread> thread_;
-  std::unique_ptr<URLRequestContext> url_request_context_;
   scoped_refptr<URLRequestContextGetter> url_request_context_getter_;
   NetworkDelegate* network_delegate_;
   std::unique_ptr<NetworkSystem> network_system_;
@@ -180,7 +184,6 @@ class NetworkModule : public base::CurrentThread::DestructionObserver {
 #if defined(ENABLE_NETWORK_LOGGING)
   std::unique_ptr<CobaltNetLog> net_log_{nullptr};
 #endif
-  Options options_;
   bool protocol_filter_update_pending_;
 
   DISALLOW_COPY_AND_ASSIGN(NetworkModule);

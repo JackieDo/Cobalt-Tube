@@ -245,6 +245,9 @@ class NET_EXPORT URLRequestContext final {
   }
 #endif
 
+  void set_http_user_agent_settings(
+      std::unique_ptr<const HttpUserAgentSettings> http_user_agent_settings);
+
  private:
   friend class URLRequestContextBuilder;
 
@@ -279,8 +282,6 @@ class NET_EXPORT URLRequestContext final {
   void set_throttler_manager(
       std::unique_ptr<URLRequestThrottlerManager> throttler_manager);
   void set_quic_context(std::unique_ptr<QuicContext> quic_context);
-  void set_http_user_agent_settings(
-      std::unique_ptr<const HttpUserAgentSettings> http_user_agent_settings);
   void set_network_quality_estimator(
       NetworkQualityEstimator* network_quality_estimator);
   void set_client_socket_factory(
