@@ -33,8 +33,11 @@ using starboard::android::shared::ScopedLocalJavaRef;
 #endif
 
 
-H5vccTizenTube::H5vccTizenTube(cobalt::network::NetworkModule* network_module)
-    : network_module_{network_module} {}
+H5vccTizenTube::H5vccTizenTube(
+    cobalt::network::NetworkModule* network_module,
+    cobalt::persistent_storage::PersistentSettings* persistent_settings)
+    : network_module_{network_module},
+      persistent_settings_{persistent_settings} {}
 
 bool H5vccTizenTube::InstallAppFromURL(const std::string& url) const {
 #if defined(ANDROID)
@@ -62,6 +65,7 @@ std::string H5vccTizenTube::GetVersion() const {
 }
 
 bool H5vccTizenTube::SetUserAgent(const std::string& user_agent) const {
+  persistent_settings_->Set("userAgent", base::Value(user_agent));
   network_module_->task_runner()->PostTask(
       FROM_HERE, base::Bind(
                      [](cobalt::network::NetworkModule* network_module,
