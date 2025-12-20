@@ -37,7 +37,9 @@ namespace h5vcc {
 // This class is used for internal methods for TizenTube Cobalt.
 class H5vccTizenTube : public script::Wrappable {
  public:
-  explicit H5vccTizenTube(cobalt::network::NetworkModule* network_module);
+  explicit H5vccTizenTube(
+      cobalt::network::NetworkModule* network_module,
+      cobalt::persistent_storage::PersistentSettings* persistent_settings);
 
   H5vccTizenTube();
 
@@ -51,6 +53,8 @@ class H5vccTizenTube : public script::Wrappable {
 
  private:
   cobalt::network::NetworkModule* network_module_ = nullptr;
+  cobalt::persistent_storage::PersistentSettings* persistent_settings_ =
+      nullptr;
   DISALLOW_COPY_AND_ASSIGN(H5vccTizenTube);
 };
 

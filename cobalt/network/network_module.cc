@@ -350,6 +350,16 @@ void NetworkModule::Initialize(const std::string& user_agent_string,
 
 #endif  // ENABLE_DEBUG_COMMAND_LINE_SWITCHES
 
+
+  base::Value ua_string_value;
+
+  options_.persistent_settings->Get("userAgent", &ua_string_value);
+  std::string* ua_string = ua_string_value.GetIfString();
+  if (ua_string && !ua_string->empty()) {
+    http_user_agent_settings.reset(new net::StaticHttpUserAgentSettings(
+        options_.preferred_language, *ua_string));
+  }
+
   // Launch the IO thread.
   base::Thread::Options thread_options;
   thread_options.message_pump_type = base::MessagePumpType::IO;
